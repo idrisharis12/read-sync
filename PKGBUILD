@@ -1,5 +1,5 @@
 pkgname=read-sync
-pkgver=0.1.3
+pkgver=0.1.4
 pkgrel=1
 pkgdesc="Terminal native manga and comic reader with tracker sync and headless server."
 arch=('any')
