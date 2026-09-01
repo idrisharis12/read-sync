@@ -11,7 +11,7 @@ def startup():
 
 @app.get("/")
 def read_root():
-    return {"status": "read-sync server running", "version": "0.1.6"}
+    return {"status": "read-sync server running", "version": "0.1.7"}
 
 @app.get("/api/library", response_model=List[Dict])
 def get_library():
