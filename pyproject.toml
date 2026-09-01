@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "read-sync"
+version = "0.1.0"
+authors = [
+  { name="Blakie", email="blakie@users.noreply.github.com" },
+]
+description = "Terminal native manga and comic reader with tracker sync and headless server."
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Environment :: Console",
+]
+dependencies = [
+    "requests>=2.25.0",
+    "tqdm>=4.60.0",
+    "Pillow>=9.0.0",
+    "textual",
+    "fastapi",
+    "uvicorn",
+    "quickjs"
+]
+keywords = [
+    "manga",
+    "terminal",
+    "cli",
+    "comic",
+    "tui",
+]
+
+[project.scripts]
+read-sync = "read_sync.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["read_sync*"]

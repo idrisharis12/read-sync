@@ -1,0 +1,44 @@
+# Byte-compiled / optimized
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+build/
+dist/
+*.egg-info/
+*.spec
+
+# Virtual environments
+env/
+venv/
+.venv/
+ENV/
+
+# Configuration, Tokens & Secrets (Prevent accidental leaks)
+*.env
+.env*
+config.env
+*.token*
+token.json
+history.json
+ani-hsts
+MAL_CLIENT_*
+*.secret*
+*.pem
+*.key
+
+# IDE / editor settings
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Testing & Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
