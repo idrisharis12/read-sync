@@ -38,6 +38,9 @@ def main():
     auth_parser = subparsers.add_parser("auth", help="Connect cloud tracking accounts")
     auth_parser.add_argument("service", choices=["anilist", "mal", "kitsu", "mangaupdates"])
 
+    # Read command
+    read_parser = subparsers.add_parser("read", help="Read a manga directly via native scraper")
+    
     # Dev/Test commands
     subparsers.add_parser("demo-add", help="Add a demo manga to the library for testing")
 
@@ -64,12 +67,57 @@ def main():
     elif args.command == "library":
         from read_sync.tui import run_tui
         run_tui()
+    elif args.command == "read":
+        # Temporary read command for E2E native testing
+        search_query = " ".join(unknown) if unknown else "solo leveling"
+        print(f"Executing End-to-End Native Scraper for: '{search_query}'")
+        
+        from read_sync.extensions import runner_py
+        from read_sync.engine import downloader
+        from read_sync.renderers import kitty
+        import os
+        import time
+
+        results = runner_py.search_manga(search_query)
+        if not results:
+            print("No manga found!")
+            return
+            
+        first_manga = results[0]
+        print(f"Found: {first_manga['title']} (ID: {first_manga['id']})")
+        
+        chapters = runner_py.get_chapters(first_manga['id'])
+        if not chapters:
+            print("No English chapters found!")
+            return
+            
+        first_chap = chapters[-1] # Get first chapter (it's sorted desc)
+        print(f"Fetching Chapter {first_chap['chapter']}: {first_chap['title']}")
+        
+        images = runner_py.get_chapter_images(first_chap['id'])
+        print(f"Found {len(images)} pages. Starting 64x parallel download to RAM...")
+        
+        downloader.download_chapter_sync(images)
+        
+        # Test Render First Page
+        first_page_path = "/dev/shm/read-sync/page_001.jpg"
+        if os.path.exists(first_page_path):
+            print("\nRendering Page 1 using Native Kitty Graphics:")
+            time.sleep(1)
+            kitty.render_image_kitty(first_page_path)
+            print("\nDone!")
+        else:
+            print("Failed to find buffered image.")
     elif args.command == "check":
         print("Checking for updates across 64 parallel workers...")
     elif args.command == "import":
         print(f"Importing backup from {args.file} into SQLite...")
     elif args.command == "auth":
-        print(f"Starting OAuth flow for {args.service}...")
+        if args.service == "anilist":
+            from read_sync.trackers import anilist
+            anilist.login()
+        else:
+            print(f"Authentication for {args.service} is under construction.")
     elif args.command == "demo-add":
         db.add_manga("Solo Leveling", "https://example.com/solo", "comick")
         db.add_manga("Chainsaw Man", "https://example.com/csm", "mangadex")
