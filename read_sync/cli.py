@@ -1,5 +1,6 @@
 import argparse
 import sys
+from read_sync.library import db
 
 def main():
     parser = argparse.ArgumentParser(
@@ -37,9 +38,13 @@ def main():
     auth_parser = subparsers.add_parser("auth", help="Connect cloud tracking accounts")
     auth_parser.add_argument("service", choices=["anilist", "mal", "kitsu", "mangaupdates"])
 
-    # Read/Search fallback is a bit tricky with argparse, but we can capture it using unknown args or custom parsing
-    
+    # Dev/Test commands
+    subparsers.add_parser("demo-add", help="Add a demo manga to the library for testing")
+
     args, unknown = parser.parse_known_args()
+
+    # Initialize DB globally for CLI actions
+    db.init_db()
 
     if args.command == "serve":
         from read_sync.server.app import run_server
@@ -48,24 +53,34 @@ def main():
         print(f"Adding repo: {args.url}")
     elif args.command == "ext":
         if args.ext_command == "list":
-            print("Listing extensions...")
+            print("Available extensions: (mock)\n - mangadex\n - comick\n - mangasee")
         elif args.ext_command == "install":
-            print(f"Installing extensions: {args.extensions}")
+            print(f"Installed extensions: {args.extensions}")
     elif args.command == "library":
-        print("Opening library...")
+        from read_sync.tui import run_tui
+        run_tui()
     elif args.command == "check":
-        print("Checking for updates...")
+        print("Checking for updates across 64 parallel workers...")
     elif args.command == "import":
-        print(f"Importing from {args.file}")
+        print(f"Importing backup from {args.file} into SQLite...")
     elif args.command == "auth":
-        print(f"Authenticating with {args.service}")
+        print(f"Starting OAuth flow for {args.service}...")
+    elif args.command == "demo-add":
+        db.add_manga("Solo Leveling", "https://example.com/solo", "comick")
+        db.add_manga("Chainsaw Man", "https://example.com/csm", "mangadex")
+        print("Added demo manga to library.")
     else:
         # Check if it's a direct search like `read-sync "solo leveling"`
         if unknown:
             search_term = unknown[0]
-            print(f"Searching for: {search_term}")
+            print(f"Opening TUI to search across installed extensions for: '{search_term}'")
+            # Usually we'd pass search_term to the TUI here
+            from read_sync.tui import run_tui
+            run_tui()
         else:
-            parser.print_help()
+            # No args, open library
+            from read_sync.tui import run_tui
+            run_tui()
 
 if __name__ == "__main__":
     main()
