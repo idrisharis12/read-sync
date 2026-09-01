@@ -47,3 +47,22 @@ async def parallel_download_chapter(image_urls: list):
 def download_chapter_sync(image_urls: list):
     """Wrapper to run the async swarm from sync code."""
     asyncio.run(parallel_download_chapter(image_urls))
+
+def prefetch_chapter_background(image_urls: list):
+    """
+    Predictive Pre-fetching: Spawns the 64x download swarm in a background thread.
+    This allows the user to read Chapter 1 while Chapter 2 buffers silently to /dev/shm.
+    """
+    import threading
+    
+    def _run():
+        print("\n[Background Worker] Predictive pre-fetch started for next chapter...")
+        # Use a new event loop for the background thread
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        loop.run_until_complete(parallel_download_chapter(image_urls))
+        loop.close()
+        
+    thread = threading.Thread(target=_run, daemon=True)
+    thread.start()
+    return thread
