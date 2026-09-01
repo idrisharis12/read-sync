@@ -1,19 +1,48 @@
 import quickjs
+import requests
+import json
+
+def py_fetch(url: str, options: str = "{}"):
+    """Python bridge for JS fetch API."""
+    try:
+        opts = json.loads(options)
+        method = opts.get("method", "GET")
+        headers = opts.get("headers", {})
+        
+        response = requests.request(method, url, headers=headers, timeout=10)
+        
+        return json.stringify({
+            "status": response.status_code,
+            "url": response.url,
+            "text": response.text
+        })
+    except Exception as e:
+        return json.stringify({"status": 500, "error": str(e), "text": ""})
 
 def run_scraper_script(script_code: str, function_name: str, args: list):
     """
     Executes a JavaScript scraper extension securely in a QuickJS sandbox.
-    Prevents extensions from executing arbitrary host system code.
+    Includes a polyfilled fetch API bridged to Python's requests module.
     """
     context = quickjs.Context()
     
-    # We can inject python polyfills for fetch/http into the JS context here
-    mock_fetch = """
-    function fetch(url) {
-        return JSON.stringify({status: 200, data: 'mock_html'});
+    # Expose the python fetch function to the JS environment
+    context.add_callable("py_fetch", py_fetch)
+    
+    # Inject JS polyfill that wraps py_fetch to look like the standard Web API
+    polyfill = """
+    async function fetch(url, options = {}) {
+        const resultStr = py_fetch(url, JSON.stringify(options));
+        const result = JSON.parse(resultStr);
+        return {
+            status: result.status,
+            url: result.url,
+            text: async () => result.text,
+            json: async () => JSON.parse(result.text)
+        };
     }
     """
-    context.eval(mock_fetch)
+    context.eval(polyfill)
     
     # Evaluate the extension script
     context.eval(script_code)

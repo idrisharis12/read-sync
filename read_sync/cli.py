@@ -109,7 +109,20 @@ def main():
         else:
             print("Failed to find buffered image.")
     elif args.command == "check":
+        import subprocess
         print("Checking for updates across 64 parallel workers...")
+        # Simulate check finding a new chapter
+        message = "New chapter of Solo Leveling is available!"
+        print(message)
+        try:
+            # Linux popup
+            subprocess.run(["notify-send", "read-sync", message])
+        except FileNotFoundError:
+            try:
+                # macOS popup
+                subprocess.run(["osascript", "-e", f'display notification "{message}" with title "read-sync"'])
+            except Exception:
+                pass
     elif args.command == "import":
         print(f"Importing backup from {args.file} into SQLite...")
     elif args.command == "auth":

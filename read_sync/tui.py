@@ -6,13 +6,37 @@ from read_sync.library import db
 
 class ReaderScreen(Screen):
     """Screen that takes over to render the manga pages."""
+    
+    BINDINGS = [
+        ("right", "next_page", "Next Page"),
+        ("left", "prev_page", "Prev Page"),
+    ]
+    
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.current_page = 1
+        self.total_pages = 25
+        
     def compose(self) -> ComposeResult:
         yield Header()
-        yield Static("Initializing Native Kitty Graphics Protocol Engine...\n\nBuffering 64x parallel pages into /dev/shm...", id="reader-text", style="bold green")
+        yield Static(self._get_content(), id="reader-text", style="bold green")
         yield Footer()
         
     def on_mount(self):
         self.query_one(Static).styles.content_align = ("center", "middle")
+        
+    def _get_content(self):
+        return f"Native Kitty Graphics Protocol Engine\n\n[ Page {self.current_page} / {self.total_pages} ]\n\n(Use Left/Right arrows to flip pages)"
+        
+    def action_next_page(self):
+        if self.current_page < self.total_pages:
+            self.current_page += 1
+            self.query_one("#reader-text").update(self._get_content())
+            
+    def action_prev_page(self):
+        if self.current_page > 1:
+            self.current_page -= 1
+            self.query_one("#reader-text").update(self._get_content())
 
 class LibraryView(DataTable):
     def on_mount(self) -> None:
