@@ -54,6 +54,18 @@
 
 ---
 
+## ⚡ Hardware & Performance Footprint
+
+Because `read-sync` bypasses heavy Electron frameworks and browser engines, it is incredibly resource-efficient, making it perfect for older hardware, homelabs, or Raspberry Pis.
+
+| Resource | Usage Details |
+| :--- | :--- |
+| **💾 Storage (Disk)** | **~75 MB** for the standalone executable or Python environment.<br>Library metadata is stored in a highly compressed **SQLite** database (`~/.config/read-sync/library.db`), taking less than **5 MB** for a massive library.<br>Downloaded archives (`.cbz`) depend on your usage. |
+| **🧠 RAM (Memory)** | **~40 MB - 80 MB** baseline for the Textual TUI and QuickJS engine.<br>**Temporary `/dev/shm` Buffer:** When reading, chapters are buffered directly into RAM to save SSD wear. A standard 30-page manga chapter consumes about **~30 MB** of RAM dynamically. (Pillow webtoon stitching may temporarily spike to ~150 MB for massive continuous images). |
+| **⚙️ CPU (Processing)**| **< 2%** during reading. Image rendering is completely offloaded to your terminal's GPU (via the Kitty Graphics Protocol).<br>The **64x Parallel Downloader** is asynchronous (I/O bound), meaning it downloads at maximum line-speed without bottlenecking your CPU threads. |
+
+---
+
 ## 🚀 Quick Installation
 
 **`read-sync` is shipped as a single, compiled standalone executable for all platforms.** No Python setup required!
