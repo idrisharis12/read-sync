@@ -52,10 +52,15 @@ def main():
     elif args.command == "repo":
         print(f"Adding repo: {args.url}")
     elif args.command == "ext":
+        from read_sync.extensions import manager
         if args.ext_command == "list":
-            print("Available extensions: (mock)\n - mangadex\n - comick\n - mangasee")
+            exts = manager.list_available()
+            print("Available English Extensions:")
+            for e in exts:
+                print(f" - {e['name']} (v{e['version']})")
         elif args.ext_command == "install":
-            print(f"Installed extensions: {args.extensions}")
+            for ext in args.extensions:
+                manager.install_extension(ext)
     elif args.command == "library":
         from read_sync.tui import run_tui
         run_tui()
