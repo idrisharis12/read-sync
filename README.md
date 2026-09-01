@@ -1,46 +1,28 @@
-# read-sync — Terminal-Native Manga & Comic Reader
+<div align="center">
 
-`read-sync` is a CLI tool to **read manga, comics, and webtoons entirely in the terminal**, utilizing sandboxed community scrapers, zero-latency image rendering, and automatic library tracking.
+<img src="https://img.shields.io/badge/read--sync-Terminal_Reader-00E676?style=for-the-badge&logo=gnometerminal" alt="read-sync logo" width="300" />
 
-<p align="center">
-  <img src="https://img.shields.io/badge/read--sync-Terminal_Reader-00E676?style=for-the-badge&logo=gnometerminal" alt="read-sync logo" />
-</p>
+# 📖 read-sync
 
-<h1 align="center">📖 read-sync</h1>
+**The Ultimate High-Performance Terminal Manga Reader & Headless OPDS Server**
 
-<p align="center">
-  <b>The Ultimate High-Performance Terminal Manga Reader & Headless OPDS Server</b>
-</p>
+[![GitHub Stars](https://img.shields.io/github/stars/idrisharis12/read-sync?style=for-the-badge&logo=github&color=FFD700)](https://github.com/idrisharis12/read-sync/stargazers)
+[![Release](https://img.shields.io/github/v/release/idrisharis12/read-sync?style=for-the-badge&color=00E676&logo=rocket)](https://github.com/idrisharis12/read-sync/releases)
+[![License: MIT](https://img.shields.io/badge/License-MIT-0088FF.svg?style=for-the-badge&logo=opensourceinitiative)](LICENSE)
+<br>
+[![Platform Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)](#)
+[![Platform macOS](https://img.shields.io/badge/macOS-000000?style=for-the-badge&logo=apple&logoColor=white)](#)
+[![Platform Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)](#)
+[![Graphics Kitty/Sixel](https://img.shields.io/badge/Graphics-Kitty%20%7C%20Sixel-00C853?style=for-the-badge&logo=codeforces)](#)
 
-<p align="center">
-  <i>Read any manga from your terminal with <b>64x parallel pre-fetching</b>, <b>native Kitty/Sixel graphics</b>, <b>sandboxed QuickJS extensions</b>, and automatic real-time watch progress sync to <b>MyAnimeList</b>, <b>AniList</b> & <b>MangaUpdates</b>.</i>
-</p>
+*Read manga, comics, and webtoons entirely in your terminal with **64x parallel pre-fetching**, native **Kitty/Sixel GPU rendering**, sandboxed **QuickJS extensions**, and real-time **AniList / MyAnimeList** sync!*
 
-<p align="center">
-  <a href="https://github.com/idrisharis12/read-sync/stargazers"><img src="https://img.shields.io/github/stars/idrisharis12/read-sync?style=for-the-badge&logo=github&color=FFD700" alt="GitHub Stars" /></a>
-  <a href="https://github.com/idrisharis12/read-sync/releases"><img src="https://img.shields.io/github/v/release/idrisharis12/read-sync?style=for-the-badge&color=00E676&logo=rocket" alt="Release" /></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-0088FF.svg?style=for-the-badge&logo=opensourceinitiative" alt="License: MIT" /></a>
-  <a href="https://www.python.org/"><img src="https://img.shields.io/badge/Python-3.8+-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python 3.8+" /></a><br>
-  <img src="https://img.shields.io/badge/Platform-Linux%20%7C%20macOS%20%7C%20Windows-2D3748?style=for-the-badge&logo=linux" alt="Platform" />
-  <img src="https://img.shields.io/badge/Graphics-Kitty%20%7C%20Sixel-00C853?style=for-the-badge&logo=codeforces" alt="Native Graphics" />
-  <img src="https://img.shields.io/badge/Tracking-MAL%20%7C%20AniList%20%7C%20MU-7C4DFF?style=for-the-badge&logo=graphql" alt="Multi-Platform Tracking" />
-</p>
+[**🚀 Quick Install**](#-quick-installation) • 
+[**📋 CheatSheet**](CHEATSHEET.md) • 
+[**✨ Features**](#-core-features) • 
+[**⚙️ Headless Server**](#️-headless-server-setup)
 
----
-
-## 📦 Changelog & Recent Updates
-
-<details>
-<summary><b>✨ What's New in v0.1.x (Click to expand)</b></summary>
-
-### v0.1.1
-- **✨ Automated Release Workflow** — Added `ani-sync` style Makefile, `git-update.sh`, and `bump_version.py`.
-- **🚀 Textual UI Engine** — Implemented the TUI interface with DataTable library layout.
-- **⚡ Parallel Pre-Fetching Engine** — Spawns 64x worker swarms buffering straight to `/dev/shm`.
-- **🛡️ Sandboxed JS Scrapers** — Built QuickJS integration for evaluating Tachiyomi/Mihon and Keiyoushi extensions securely.
-- **☁️ Headless Server** — Shipped `FastAPI` OPDS endpoints for KOReader and Kavita integration.
-
-</details>
+</div>
 
 ---
 
@@ -59,101 +41,99 @@
 
 ---
 
-## 📑 Table of Contents
-- [✨ Core Features](#-core-features)
-- [📦 Quick Installation](#-quick-installation)
-- [🚀 Detailed Usage](#-detailed-usage)
-- [⚙️ Headless Server Setup](#️-headless-server-setup)
-
----
-
 ## ✨ Core Features
 
-- **🛡️ Modular Extension Repository Engine**: Zero hardcoded scrapers. Load community extensions (e.g., Keiyoushi) with the sandboxed QuickJS/WebAssembly execution runtime without restarting.
-- **🖥️ True Terminal Native Renderers**: Supports pure zero-latency GPU rasterization using the **Kitty Graphics Protocol**, **Sixel Engine**, or **iTerm2 Inline Images**. 
-- **✂️ Webtoon & Manhwa Dynamic Stitcher**: Seamless vertical image stitching without split-pixel gaps. Automatically slices vertical strips perfectly to your terminal height so you can scroll smoothly.
-- **📚 SQLite Library & Scrobbling**: Complete multi-cloud tracking across **AniList**, **MyAnimeList**, **MangaUpdates**, and **Kitsu**.
-- **🌐 Headless Suwayomi OPDS Server**: Spawn a background FastAPI server on `port 4567` to serve your library to external e-readers like **KOReader** and **Kavita**.
-- **⚡ Parallel Chapter Swarm**: Downloads batches of chapters using 64 asynchronous workers directly into your system's `/dev/shm` RAM-disk to save SSD writes.
+| Feature | Description |
+| :--- | :--- |
+| **🛡️ Extension Engine** | Zero hardcoded scrapers. Uses the sandboxed **QuickJS** engine to evaluate JS scrapers (e.g. Mangayomi/Keiyoushi) on the fly securely. |
+| **🖥️ Native Rendering** | Pure zero-latency GPU rasterization using **Kitty Graphics Protocol**, **Sixel**, or iTerm2 inline images. |
+| **✂️ Webtoon Stitcher** | Seamless vertical stitching for Manhwa/Webtoons. Automatically slices strips perfectly to your terminal height for smooth scrolling. |
+| **⚡ 64x Swarm Download** | Fetches chapter batches using 64 concurrent asynchronous workers straight to `/dev/shm` (RAM) to save SSD wear. |
+| **☁️ Cloud Scrobbling** | Connects to **AniList**, **MyAnimeList**, **MangaUpdates**, and **Kitsu** to auto-sync your library via GraphQL/OAuth. |
+| **🌐 Headless Server** | Background `FastAPI` instance hosts an **OPDS catalog** server on `port 4567` for Kavita, KOReader, and Moon+ Reader. |
 
 ---
 
-## 📦 Quick Installation
+## 🚀 Quick Installation
 
-### 🚀 Universal Bash Installer (Linux / macOS)
+**`read-sync` is shipped as a single, compiled standalone executable for all platforms.** No Python setup required!
+
+### 📥 1. Download the Latest Release Binary
+
+Go to the [**Releases Page**](https://github.com/idrisharis12/read-sync/releases/latest) and download the binary for your OS:
+
+- 🐧 **Linux**: `read-sync-linux`
+- 🍎 **macOS**: `read-sync-macos`
+- 🪟 **Windows**: `read-sync-windows.exe`
+
+### ⚙️ 2. Install via Command Line (Alternative)
+
+<details>
+<summary><b>🐧 Linux / 🍎 macOS (Bash Auto-Install)</b></summary>
+<br>
+
 ```bash
 curl -fsSL https://raw.githubusercontent.com/idrisharis12/read-sync/main/install.sh | bash
 ```
+</details>
 
-### 🪟 Windows (PowerShell)
+<details>
+<summary><b>🪟 Windows (PowerShell Auto-Install)</b></summary>
+<br>
+
 ```powershell
 iwr -useb https://raw.githubusercontent.com/idrisharis12/read-sync/main/install.ps1 | iex
 ```
+</details>
 
-### 🏹 Arch Linux (AUR)
-```bash
-# Clone the PKGBUILD or use yay
-yay -S read-sync
-```
+<details>
+<summary><b>🐍 Build from Source (Pip / Make)</b></summary>
+<br>
 
-### 🐍 Pip (Python 3.8+)
 ```bash
 git clone https://github.com/idrisharis12/read-sync.git
 cd read-sync
 make install
 ```
+</details>
 
 ---
 
-## 🚀 Detailed Usage
+## 📖 How to Use
 
-### 1. Search & Read
-Search interactively using the built-in Textual TUI:
-```bash
-read-sync "chainsaw man"
-read-sync "solo leveling" --mode webtoon
-read-sync continue
-```
+*(Check out the [**CheatSheet**](CHEATSHEET.md) for a full command reference!)*
 
-### 2. Manage Extensions
-Load external Keiyoushi/Mihon standard scraper registries:
+### First Time Setup: Install Scrapers
+`read-sync` comes with zero scrapers built-in for safety. Install some from the community registry:
 ```bash
-read-sync repo add https://keiyoushi.github.io/extensions/index.min.json
 read-sync ext list
-read-sync ext install mangadex comick
+read-sync ext install comick
 ```
 
-### 3. Library Management
+### Search & Read
+Pop open the TUI or use the direct native fallback reader:
 ```bash
-read-sync library                     # Open Textual Library UI
-read-sync check                       # Check remote for new chapters
-read-sync import backup.tachibk       # Migrate your Tachiyomi/Mihon backup!
+read-sync                       # Open interactive library UI
+read-sync read "chainsaw man"   # Read immediately via terminal GPU
 ```
 
-### 4. Cloud Authentication
+### Connect AniList / MAL Tracker
 ```bash
 read-sync auth anilist
-read-sync auth mal
-```
-
-### 5. Batch Archiver
-Download full series into portable `.cbz` files with ComicInfo.xml metadata:
-```bash
-read-sync "berserk" -d 1-50 --cbz
 ```
 
 ---
 
-## ⚙️ Headless Server Setup
-Run the background server to host your library over the local network via REST/OPDS APIs:
+## 🌐 Headless Server Setup
+You can run `read-sync` in the background to serve your local downloaded `.cbz` manga library to tablets and e-readers via standard OPDS.
+
 ```bash
 read-sync serve --port 4567
 ```
-- Open `http://localhost:4567` in your browser for the Web UI.
-- Use `http://localhost:4567/opds` in **KOReader**, **Kavita**, or **Moon+ Reader**.
+1. Open `http://localhost:4567` in your browser.
+2. In **KOReader** or **Kavita**, add `http://localhost:4567/opds` to your network libraries!
 
 ---
-
-<p align="center">
+<div align="center">
   <i>Developed with ❤️ by the read-sync community.</i>
-</p>
+</div>
